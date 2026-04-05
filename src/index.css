@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-oswald: "Oswald", sans-serif;
+  --font-source: "Source Sans 3", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+  
+  --color-void: #04070f;
+  --color-deep: #07101e;
+  --color-dark: #0b1828;
+  --color-card: #0f2035;
+  --color-card2: #132540;
+  --color-border-custom: rgba(255,255,255,0.07);
+  --color-border2-custom: rgba(255,255,255,0.14);
+  --color-red-custom: #e63030;
+  --color-red2-custom: #ff4444;
+  --color-gold-custom: #d4a017;
+  --color-gold2-custom: #f0bc2e;
+  --color-text-custom: #e8eef8;
+  --color-text2-custom: #8fa8c8;
+  --color-text3-custom: #3d5470;
+  --color-bnp: #1a6fd4;
+  --color-bnp2: #2d85f0;
+  --color-jamaat: #27a060;
+  --color-jamaat2: #34c47a;
+  --color-ncp: #c47d00;
+  --color-ind: #9b59b6;
+  --color-others: #607d8b;
+}
+
+@layer base {
+  body {
+    @apply bg-void text-text-custom font-source antialiased overflow-x-hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-oswald;
+  }
+}
+
+@keyframes tickerRoll {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+.ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: tickerRoll 60s linear infinite;
+}
+
+.parl-arc-text {
+  @apply font-oswald text-[#d4a017] font-semibold;
+}
+
+.ctable th {
+  @apply font-mono text-[8px] tracking-[2px] text-text3-custom uppercase font-normal border-b border-border2-custom py-2 px-3;
+}
+
+.ctable td {
+  @apply py-2 px-3 border-b border-border-custom text-text2-custom align-middle;
+}
