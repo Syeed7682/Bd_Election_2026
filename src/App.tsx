@@ -4,20 +4,22 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, LineChart, Line, AreaChart, Area, ScatterChart, Scatter, ZAxis
 } from 'recharts';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  TrendingUp, Users, MapPin, Award, Activity, 
-  Clock, AlertCircle, CheckCircle2, ChevronRight, 
+import {
+  TrendingUp, Users, MapPin, Award, Activity,
+  Clock, AlertCircle, CheckCircle2, ChevronRight,
   Globe, Radio, BarChart3, PieChart as PieChartIcon,
   Zap, Brain, Target, Layers, Info, Menu, X,
   ChevronDown, ExternalLink, ShieldCheck
 } from 'lucide-react';
 import { ELECTION_DATA } from './data/electionData';
 import { cn } from './lib/utils';
+import BangladeshLeafletMap from './components/BangladeshLeafletMap';
+import ConstituencyExplorer from './components/ConstituencyExplorer';
 
 // --- Constants & Types ---
 
@@ -118,7 +120,7 @@ const Masthead = () => {
 };
 
 const KpiBox = ({ title, value, subValue, color, icon: Icon, delay = 0 }: any) => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, duration: 0.5 }}
@@ -167,7 +169,7 @@ const PartyBar = ({ party, maxSeats }: { party: any, maxSeats: number, key?: str
       </div>
     </div>
     <div className="h-2.5 bg-zinc-800 rounded-full overflow-hidden shadow-inner border border-zinc-800/50">
-      <motion.div 
+      <motion.div
         initial={{ width: 0 }}
         animate={{ width: `${(party.seats / maxSeats) * 100}%` }}
         transition={{ duration: 1, ease: "easeOut" }}
@@ -179,6 +181,205 @@ const PartyBar = ({ party, maxSeats }: { party: any, maxSeats: number, key?: str
     </div>
   </div>
 );
+
+const BangladeshMap = () => {
+  const divisions = useMemo(() => [
+    {
+      id: 1,
+      name: "Dhaka",
+      bnName: "ঢাকা",
+      seats: 71,
+      bnp: 48,
+      jamaat: 15,
+      others: 8,
+      turnout: 62.4,
+      grid: { x: 4.5, y: 3.8 },
+      color: "#1a7fd4"
+    },
+    {
+      id: 2,
+      name: "Chattogram",
+      bnName: "চট্টগ্রাম",
+      seats: 58,
+      bnp: 38,
+      jamaat: 14,
+      others: 6,
+      turnout: 58.7,
+      grid: { x: 7.2, y: 5.1 },
+      color: "#1db954"
+    },
+    {
+      id: 3,
+      name: "Rajshahi",
+      bnName: "রাজশাহী",
+      seats: 39,
+      bnp: 28,
+      jamaat: 8,
+      others: 3,
+      turnout: 66.2,
+      grid: { x: 2.8, y: 2.9 },
+      color: "#fbbf24"
+    },
+    {
+      id: 4,
+      name: "Khulna",
+      bnName: "খুলনা",
+      seats: 36,
+      bnp: 25,
+      jamaat: 7,
+      others: 4,
+      turnout: 59.8,
+      grid: { x: 2.1, y: 5.5 },
+      color: "#8c7355"
+    },
+    {
+      id: 5,
+      name: "Rangpur",
+      bnName: "রংপুর",
+      seats: 33,
+      bnp: 24,
+      jamaat: 6,
+      others: 3,
+      turnout: 64.1,
+      grid: { x: 1.8, y: 1.5 },
+      color: "#1a7fd4"
+    },
+    {
+      id: 6,
+      name: "Barisal",
+      bnName: "বরিশাল",
+      seats: 21,
+      bnp: 15,
+      jamaat: 4,
+      others: 2,
+      turnout: 57.3,
+      grid: { x: 3.9, y: 6.8 },
+      color: "#1db954"
+    },
+    {
+      id: 7,
+      name: "Mymensingh",
+      bnName: "ময়মনসিংহ",
+      seats: 24,
+      bnp: 17,
+      jamaat: 5,
+      others: 2,
+      turnout: 60.9,
+      grid: { x: 5.1, y: 2.2 },
+      color: "#fbbf24"
+    },
+    {
+      id: 8,
+      name: "Sylhet",
+      bnName: "সিলেট",
+      seats: 19,
+      bnp: 14,
+      jamaat: 3,
+      others: 2,
+      turnout: 52.8,
+      grid: { x: 6.8, y: 2.8 },
+      color: "#8c7355"
+    },
+  ], []);
+
+  return (
+    <div className="relative w-full h-[680px] overflow-hidden bg-zinc-950/60 rounded-2xl flex items-center justify-center border border-zinc-800">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <Globe size={620} strokeWidth={0.6} className="text-zinc-400 mx-auto mt-12" />
+      </div>
+
+      <div className="relative" style={{ transform: 'scale(0.92)' }}>
+        {divisions.map((div, divIndex) => {
+          const seatList: any[] = [];
+          for (let i = 0; i < div.bnp; i++) seatList.push({ party: 'BNP', color: COLORS.bnp });
+          for (let i = 0; i < div.jamaat; i++) seatList.push({ party: 'Jamaat', color: COLORS.jamaat });
+          for (let i = 0; i < div.others; i++) seatList.push({ party: 'Others/IND', color: COLORS.others });
+
+          const shuffledSeats = [...seatList].sort(() => Math.random() - 0.5);
+          const cols = Math.ceil(Math.sqrt(shuffledSeats.length));
+          const hexSize = Math.max(11, Math.min(16, 280 / cols));
+
+          return (
+            <div
+              key={div.id}
+              className="absolute flex flex-col items-center transition-all duration-700 hover:z-20 group"
+              style={{
+                left: `${div.grid.x * 78}px`,
+                top: `${div.grid.y * 78}px`,
+              }}
+            >
+              <div className="mb-3 text-center">
+                <div className="text-[11px] font-black text-white tracking-widest uppercase">
+                  {div.name}
+                </div>
+                <div className="text-[9px] text-zinc-500 font-bold">
+                  {div.bnName} • {div.seats} Seats • Turnout {div.turnout}%
+                </div>
+              </div>
+
+              <div
+                className="flex flex-wrap gap-[3px] justify-center"
+                style={{ width: `${cols * (hexSize + 3)}px` }}
+              >
+                {shuffledSeats.map((seat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0, rotate: -15 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      delay: 0.08 + (i * 0.003) + (divIndex * 0.1),
+                      type: "spring",
+                      stiffness: 180,
+                      damping: 15
+                    }}
+                    whileHover={{ scale: 1.35, zIndex: 30 }}
+                    className="relative cursor-pointer group/hex"
+                    style={{
+                      width: hexSize,
+                      height: hexSize * 1.1547,
+                      clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                      backgroundColor: seat.color,
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.6)',
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover/hex:opacity-40 transition-opacity" />
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black border border-zinc-700 text-[9px] font-black px-3 py-1 rounded opacity-0 group-hover/hex:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-xl transition-all">
+                      {div.name} — {seat.party}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-4 flex gap-4 text-[9px] font-black uppercase tracking-widest">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS.bnp }} />
+                  <span className="text-blue-400">BNP {div.bnp}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS.jamaat }} />
+                  <span className="text-green-400">Jamaat {div.jamaat}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900/90 border border-zinc-700 px-6 py-2 rounded-full flex items-center gap-6 text-xs font-black tracking-widest">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.bnp }} /> BNP Majority
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.jamaat }} /> Jamaat-e-Islami
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.others }} /> Others / IND
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 // --- Page Components ---
 
@@ -220,7 +421,7 @@ const ResultsPage = () => {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '8px', color: '#fff' }}
                     itemStyle={{ color: '#fff' }}
                   />
@@ -253,7 +454,7 @@ const ResultsPage = () => {
                 <PartyBar key={p.name} party={p} maxSeats={300} />
               ))}
             </div>
-            
+
             <div className="mt-12">
               <SectionHead title="Notable" highlight="Races" />
               <div className="overflow-x-auto">
@@ -298,63 +499,11 @@ const ResultsPage = () => {
 
 const MapPage = () => (
   <div className="space-y-8">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div className="lg:col-span-8">
-        <Card className="h-[600px] flex flex-col items-center justify-center relative bg-zinc-950">
-          <div className="absolute top-6 left-6">
-            <SectionHead title="Electoral" highlight="Map" />
-          </div>
-          <div className="text-center space-y-4">
-            <div className="p-6 bg-zinc-900 rounded-full inline-block border border-zinc-800 animate-pulse">
-              <MapPin size={48} className="text-red-600" />
-            </div>
-            <h3 className="text-2xl font-black text-white uppercase tracking-tighter font-oswald">Interactive Map Visualization Engine</h3>
-            <p className="text-zinc-500 text-sm max-w-md mx-auto font-medium">
-              Loading high-resolution geospatial data for all 300 constituencies. 
-              Real-time synchronization with EC-BD servers in progress.
-            </p>
-          </div>
-          <div className="absolute bottom-6 right-6 flex gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-600" />
-              <span className="text-[10px] font-black text-zinc-400 uppercase">BNP</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-600" />
-              <span className="text-[10px] font-black text-zinc-400 uppercase">Jamaat</span>
-            </div>
-          </div>
-        </Card>
-      </div>
-      <div className="lg:col-span-4 space-y-6">
-        <SectionHead title="Division" highlight="Scorecards" />
-        <div className="grid grid-cols-1 gap-4">
-          {ELECTION_DATA.divisions.slice(0, 6).map((div) => (
-            <div key={div.name} className="bg-zinc-900/60 border border-zinc-800 p-4 rounded-lg flex justify-between items-center group hover:border-red-600/30 transition-all">
-              <div>
-                <h4 className="text-sm font-black text-white uppercase tracking-widest">{div.name}</h4>
-                <p className="text-[9px] font-bold text-zinc-500 uppercase mt-0.5">Turnout: {div.turnout}%</p>
-              </div>
-              <div className="flex gap-4">
-                <div className="text-center">
-                  <p className="text-[8px] font-black text-blue-500 uppercase">BNP</p>
-                  <p className="text-lg font-black text-white font-oswald leading-none">{div.bnp}</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[8px] font-black text-green-500 uppercase">JAM</p>
-                  <p className="text-lg font-black text-white font-oswald leading-none">{div.jamaat}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button className="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-black uppercase tracking-[0.2em] rounded transition-colors border border-zinc-700">
-          View All Divisions
-        </button>
-      </div>
-    </div>
+    <BangladeshLeafletMap />
+    <ConstituencyExplorer />
   </div>
 );
+
 
 const MLPage = () => (
   <div className="space-y-8">
@@ -374,16 +523,16 @@ const MLPage = () => (
               <BarChart data={ELECTION_DATA.mlMetrics.featureImportance} layout="vertical" margin={{ left: 40 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#222" horizontal={false} />
                 <XAxis type="number" hide />
-                <YAxis 
-                  dataKey="name" 
-                  type="category" 
-                  stroke="#666" 
-                  fontSize={10} 
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  stroke="#666"
+                  fontSize={10}
                   fontWeight="900"
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '8px' }}
                 />
                 <Bar dataKey="importance" fill="#dc2626" radius={[0, 4, 4, 0]} barSize={30} />
@@ -393,7 +542,7 @@ const MLPage = () => (
           <div className="mt-6 p-4 bg-zinc-950/50 rounded-lg border border-zinc-800">
             <p className="text-xs text-zinc-400 leading-relaxed italic">
               <Info size={14} className="inline mr-2 text-zinc-500" />
-              The Random Forest model identifies "Winning Margin" and "Total Voters" as the strongest predictors for constituency outcomes, 
+              The Random Forest model identifies "Winning Margin" and "Total Voters" as the strongest predictors for constituency outcomes,
               suggesting high electoral volatility in densely populated areas.
             </p>
           </div>
@@ -411,11 +560,11 @@ const MLPage = () => (
                   <span className="text-xl font-black text-red-600 font-oswald">{(model.accuracy * 100).toFixed(1)}%</span>
                 </div>
                 <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${model.accuracy * 100}%` }}
                     transition={{ duration: 1 }}
-                    className="h-full bg-red-600" 
+                    className="h-full bg-red-600"
                   />
                 </div>
                 <div className="mt-3 flex justify-between text-[9px] font-black uppercase tracking-widest text-zinc-500">
@@ -475,7 +624,7 @@ const GonovotePage = () => (
         <Card className="h-full flex flex-col justify-center items-center py-12">
           <SectionHead title="Referendum" highlight="Result" />
           <div className="text-center my-8">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="text-[120px] font-black text-green-500 leading-none font-oswald tracking-tighter"
@@ -492,7 +641,7 @@ const GonovotePage = () => (
                   <span className="text-white">{item.value}%</span>
                 </div>
                 <div className="h-3 bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.value}%` }}
                     transition={{ duration: 1.5 }}
@@ -525,10 +674,10 @@ const GonovotePage = () => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '8px' }}
                 />
-                <Legend verticalAlign="bottom" height={36}/>
+                <Legend verticalAlign="bottom" height={36} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -580,9 +729,9 @@ export default function App() {
               <tab.icon size={14} className={activeTab === tab.id ? "text-red-600" : "text-zinc-600"} />
               {tab.label}
               {activeTab === tab.id && (
-                <motion.div 
+                <motion.div
                   layoutId="activeTab"
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]" 
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
                 />
               )}
             </button>

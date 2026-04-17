@@ -51,5 +51,16 @@ export const ELECTION_DATA = {
     { id: 0, name: 'High Poverty', poverty: 32.4, literacy: 46.2, turnout: 54.1, party: 'BNP' },
     { id: 1, name: 'Moderate', poverty: 18.6, literacy: 50.1, turnout: 52.8, party: 'BNP' },
     { id: 2, name: 'Low Poverty', poverty: 10.8, literacy: 51.4, turnout: 56.3, party: 'Jamaat' },
+  ],
+  seatDistribution: [
+    { id: 'rangpur', name: 'Rangpur', seats: 33, bnp: 14, jamaat: 16, others: 3, grid: { x: 3, y: 0 } },
+    { id: 'rajshahi', name: 'Rajshahi', seats: 39, bnp: 28, jamaat: 11, others: 0, grid: { x: 1, y: 2 } },
+    { id: 'mymensingh', name: 'Mymensingh', seats: 24, bnp: 18, jamaat: 3, others: 3, grid: { x: 4, y: 2 } },
+    { id: 'sylhet', name: 'Sylhet', seats: 18, bnp: 18, jamaat: 0, others: 0, grid: { x: 7, y: 2 } },
+    { id: 'dhaka', name: 'Dhaka', seats: 71, bnp: 58, jamaat: 8, others: 5, grid: { x: 4, y: 5 } },
+    { id: 'khulna', name: 'Khulna', seats: 36, bnp: 11, jamaat: 25, others: 0, grid: { x: 1, y: 7 } },
+    { id: 'barishal', name: 'Barishal', seats: 21, bnp: 16, jamaat: 2, others: 3, grid: { x: 4, y: 8 } },
+    { id: 'chittagong', name: 'Chittagong', seats: 58, bnp: 49, jamaat: 3, others: 6, grid: { x: 7, y: 8 } },
   ]
 };
+

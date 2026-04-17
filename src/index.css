@@ -61,3 +61,35 @@
 .ctable td {
   @apply py-2 px-3 border-b border-border-custom text-text2-custom align-middle;
 }
+
+/* ── Leaflet election popup dark theme ── */
+.election-popup .leaflet-popup-content-wrapper {
+  background: #0d1117;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  color: #e0e0e0;
+  font-family: sans-serif;
+}
+.election-popup .leaflet-popup-content {
+  margin: 0;
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+.election-popup .leaflet-popup-tip {
+  background: #0d1117;
+}
+.election-popup .leaflet-popup-close-button {
+  color: #666 !important;
+  font-size: 18px !important;
+  top: 8px !important;
+  right: 10px !important;
+  z-index: 10;
+}
+.election-popup .leaflet-popup-close-button:hover {
+  color: #fff !important;
+}
+
