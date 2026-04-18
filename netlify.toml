@@ -2,6 +2,7 @@
   command = "npm run build"
   publish = "dist"
 
+# Required for React Router (your tabs: results, map, ml, gonovote)
 [[redirects]]
   from = "/*"
   to = "/index.html"
