@@ -46,7 +46,7 @@ const Ticker = () => {
     "BREAKING: BNP SECURES 212 SEATS IN NATIONAL ASSEMBLY",
     "GONOVOTE: 68.26% MAJORITY VOTES YES FOR CONSTITUTIONAL REFORM",
     "TURNOUT: RAJSHAHI DIVISION LEADS WITH 66.16% PARTICIPATION",
-    "ANALYSIS: RANDOM FOREST MODEL PREDICTS RESULTS WITH 74% ACCURACY",
+    "ANALYSIS: RANDOM FOREST MODEL PREDICTS RESULTS WITH 78% ACCURACY",
     "DEMOGRAPHICS: OVER 127 MILLION REGISTERED VOTERS PARTICIPATED",
     "ML INSIGHT: MARGIN OF VICTORY IDENTIFIED AS TOP PREDICTIVE FEATURE",
     "REGIONAL: SYLHET DIVISION RECORDS LOWEST TURNOUT AT 44.83%",
@@ -509,7 +509,7 @@ const MLPage = () => (
   <div className="space-y-8">
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <KpiBox title="Best Classifier" value="RF" subValue="Random Forest" color="#a855f7" icon={Brain} delay={0.1} />
-      <KpiBox title="Accuracy" value="74.0%" subValue="Classification" color="#3b82f6" icon={Target} delay={0.2} />
+      <KpiBox title="Accuracy" value="78.0%" subValue="Classification" color="#3b82f6" icon={Target} delay={0.2} />
       <KpiBox title="Regression R²" value="0.31" subValue="Turnout Pred" color="#22c55e" icon={Activity} delay={0.3} />
       <KpiBox title="Clusters" value="3" subValue="Optimal K" color="#fbbf24" icon={Layers} delay={0.4} />
     </div>
@@ -568,8 +568,8 @@ const MLPage = () => (
                   />
                 </div>
                 <div className="mt-3 flex justify-between text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                  <span>F1-Score: {model.f1}</span>
-                  <span>Precision: {model.accuracy + 0.02}</span>
+                  <span>F1-Score: {model.f1.toFixed(4)}</span>
+                  <span>AUC-ROC: {model.auc?.toFixed(4) || 'N/A'}</span>
                 </div>
               </div>
             ))}

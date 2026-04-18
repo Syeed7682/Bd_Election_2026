@@ -35,9 +35,9 @@ export const ELECTION_DATA = {
   mlMetrics: {
     regression: { r2: 0.31, rmse: 8.7, mae: 6.9 },
     classification: [
-      { name: 'Logistic Regression', accuracy: 0.69, f1: 0.69 },
-      { name: 'Random Forest', accuracy: 0.74, f1: 0.74 },
-      { name: 'Decision Tree', accuracy: 0.71, f1: 0.71 },
+      { name: 'Logistic Regression', accuracy: 0.7800, f1: 0.7136, auc: 0.8399 },
+      { name: 'Random Forest', accuracy: 0.7800, f1: 0.7337, auc: 0.8607 },
+      { name: 'Decision Tree', accuracy: 0.6800, f1: 0.6922, auc: 0.6736 },
     ],
     featureImportance: [
       { name: 'Margin', importance: 0.31 },
