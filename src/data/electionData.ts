@@ -48,9 +48,9 @@ export const ELECTION_DATA = {
     ]
   },
   clusters: [
-    { id: 0, name: 'High Poverty', poverty: 32.4, literacy: 46.2, turnout: 54.1, party: 'BNP' },
-    { id: 1, name: 'Moderate', poverty: 18.6, literacy: 50.1, turnout: 52.8, party: 'BNP' },
-    { id: 2, name: 'Low Poverty', poverty: 10.8, literacy: 51.4, turnout: 56.3, party: 'Jamaat' },
+    { id: 0, name: 'Low Poverty / Urban', poverty: 16.59, literacy: 52.20, turnout: 48.26, margin: 48621, male: 51.16, female: 48.84, party: 'BNP' },
+    { id: 1, name: 'Moderate / High Turnout', poverty: 22.17, literacy: 45.97, turnout: 59.33, margin: 40139, male: 50.34, female: 49.66, party: 'BNP' },
+    { id: 2, name: 'High Activity / Outlier', poverty: 22.20, literacy: 50.80, turnout: 103.81, margin: 59955, male: 111.64, female: 110.78, party: 'Jamaat' },
   ],
   seatDistribution: [
     { id: 'rangpur', name: 'Rangpur', seats: 33, bnp: 14, jamaat: 16, others: 3, grid: { x: 3, y: 0 } },

@@ -594,6 +594,7 @@ const MLPage = () => (
                     { label: 'Avg Poverty', val: `${cluster.poverty}%` },
                     { label: 'Avg Literacy', val: `${cluster.literacy}%` },
                     { label: 'Avg Turnout', val: `${cluster.turnout}%` },
+                    { label: 'Avg Margin', val: cluster.margin.toLocaleString() },
                   ].map((row, i) => (
                     <div key={i} className="flex justify-between border-b border-zinc-800 pb-2">
                       <span className="text-[9px] font-black uppercase text-zinc-500">{row.label}</span>
